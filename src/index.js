@@ -634,7 +634,9 @@ export default class extends Component {
     // By default, dots only show when `total` >= 2
     if (this.state.total <= 1) return null
    const {showsButtons}=this.props;
-    let dots = []
+    let row1 = [];
+    let row2 = [];
+    let row3 = [];
     const ActiveDot = this.props.activeDot || (
       <View
         style={[
@@ -670,24 +672,77 @@ export default class extends Component {
       />
     )
     for (let i = 0; i < this.state.total; i++) {
-      dots.push(
-        i === this.state.index
+      if (i < 28) {
+        row1.push(
+          i === this.state.index
+           ? React.cloneElement(ActiveDot, { key: i })
+           : React.cloneElement(Dot, { key: i })
+        )
+      } else if(i < 56) {
+        row2.push(
+          i === this.state.index
           ? React.cloneElement(ActiveDot, { key: i })
           : React.cloneElement(Dot, { key: i })
-      )
+        )
+      } else if(i < 84) {
+        row3.push(
+          i === this.state.index
+          ? React.cloneElement(ActiveDot, { key: i })
+          : React.cloneElement(Dot, { key: i })
+        )
+      }
     }
+
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', paddingVertical: SIZE.width(1) }}>
         <View style={{marginBottom:3}}>
           {showsButtons && this.renderPrevButton()}
         </View>
-        <View
-          style={[
-            styles['pagination_' + this.state.dir],
-          ], { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          {dots}
+        <View>
+          <View
+            style={
+              ([styles["pagination_" + this.state.dir]],
+              {
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              })
+            }
+          >
+            {row1}
+          </View>
+
+          {row2?.length > 0 ? (
+            <View
+              style={
+                ([styles["pagination_" + this.state.dir]],
+                {
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                })
+              }
+            >
+              {row2}
+            </View>
+          ) : null}
+
+          {row3?.length > 0 ? (
+            <View
+              style={
+                ([styles["pagination_" + this.state.dir]],
+                {
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                })
+              }
+            >
+              {row3}
+            </View>
+          ) : null}
         </View>
-        <View style={{marginBottom:3}}>
+        <View style={{ marginBottom: 3 }}>
           {showsButtons && this.renderNextButton()}
         </View>
       </View>
